@@ -1,0 +1,4 @@
+rootProject.name = 'foedselsnummer'
+include 'core'
+include 'testutils'
+
