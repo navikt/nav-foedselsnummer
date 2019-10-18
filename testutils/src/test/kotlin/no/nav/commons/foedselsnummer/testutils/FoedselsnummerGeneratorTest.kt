@@ -1,41 +1,51 @@
 package no.nav.commons.foedselsnummer.testutils
 
-import no.nav.commons.foedselsnummer.Kjoenn
+import no.nav.commons.foedselsnummer.FoedselsNr
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.time.LocalDate
 
+
 internal class FoedselsnummerGeneratorTest {
     @Test
-    fun korrigerKontrollsiffer() {
-        System.err.println(no.nav.commons.foedselsnummer.testutils.korrigerKontrollsiffer("00000000200"))
+    fun medDato() {
+        val generator = FoedselsnummerGenerator()
+        val fnr = generator.foedselsnummer(LocalDate.of(2019, 1, 1))
+        assertThat(fnr.asString).startsWith("010119")
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun tomForFoedselsnummer() {
+        val generator = FoedselsnummerGenerator()
+        for(i in 0 until 10000) {
+            generator.foedselsnummer(LocalDate.of(2019, 1, 1))
+        }
     }
 
     @Test
-    fun generer() {
+    fun rulleringPaaDato() {
         val generator = FoedselsnummerGenerator()
 
-        val dato = LocalDate.of(2000, 10, 15)
+        val fnr = generator.foedselsnummer()
 
-        val mann = generator.foedselsnummer(kjoenn = Kjoenn.MANN, foedselsdato = dato)
-        val kvinne = generator.foedselsnummer(kjoenn = Kjoenn.KVINNE, foedselsdato = dato)
-        val dnummer = generator.foedselsnummer(foedselsdato = dato, dNummer = true)
+        for (i in 0 until 10000) {
+            val nyttNr = generator.foedselsnummer()
+            assertThat(nyttNr).isNotEqualTo(fnr)
+        }
 
-        assertThat(mann.foedselsdato).isEqualTo(dato)
-        assertThat(kvinne.foedselsdato).isEqualTo(dato)
-        assertThat(mann.kjoenn).isEqualTo(Kjoenn.MANN)
-        assertThat(kvinne.kjoenn).isEqualTo(Kjoenn.KVINNE)
-
-        assertThat(dnummer.foedselsdato).isEqualTo(dato)
-        assertThat(dnummer.dNummer).isTrue()
+        val sisteFnr = generator.foedselsnummer()
+        assertThat(sisteFnr.foedselsdato).isAfter(fnr.foedselsdato)
     }
 
     @Test
-    fun ulikeNummer() {
+    fun unikeFnr() {
         val generator = FoedselsnummerGenerator()
-        val a = generator.foedselsnummer()
-        val b = generator.foedselsnummer()
+        val set = mutableSetOf<FoedselsNr>()
 
-        assertThat(a).isNotEqualTo(b)
+        for (i in 0 until 10000) {
+            val fnr = generator.foedselsnummer()
+            assertThat(set).doesNotContain(fnr)
+            set.add(fnr)
+        }
     }
 }
