@@ -29,4 +29,13 @@ internal class FoedselsnummerGeneratorTest {
         assertThat(dnummer.foedselsdato).isEqualTo(dato)
         assertThat(dnummer.dNummer).isTrue()
     }
+
+    @Test
+    fun ulikeNummer() {
+        val generator = FoedselsnummerGenerator()
+        val a = generator.foedselsnummer()
+        val b = generator.foedselsnummer()
+
+        assertThat(a).isNotEqualTo(b)
+    }
 }

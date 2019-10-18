@@ -5,7 +5,8 @@ import no.nav.commons.foedselsnummer.Kjoenn
 import java.time.LocalDate
 
 class FoedselsnummerGenerator {
-    private var lopenr = 0
+    private var lopenrMann = -1
+    private var lopenrKvinne = -2
 
     fun foedselsnummer(
         foedselsdato: LocalDate = LocalDate.now(),
@@ -31,12 +32,17 @@ class FoedselsnummerGenerator {
     private fun individnummer(foedselsdato: LocalDate, kjoenn: Kjoenn): Int {
         for ((individSerie, aarSerie) in FoedselsNr.Companion.tabeller.serier) {
             if (aarSerie.contains(foedselsdato.year)) {
-                var res = individSerie.start + lopenr++
-                when(kjoenn) {
-                    Kjoenn.MANN -> if (res % 2 == 0) res++
-                    Kjoenn.KVINNE -> if(res % 2 != 0) res++
+                val lopenr: Int = when(kjoenn) {
+                    Kjoenn.MANN -> {
+                        lopenrMann += 2
+                        lopenrMann
+                    }
+                    Kjoenn.KVINNE -> {
+                        lopenrKvinne += 2
+                        lopenrKvinne
+                    }
                 }
-                return res
+                return individSerie.start + lopenr
             }
         }
         throw IllegalArgumentException("Fødselsdato må være mellom år 1854 og 2039")

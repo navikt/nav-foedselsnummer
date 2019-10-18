@@ -9,7 +9,7 @@ data class FoedselsNr(@JsonValue val asString: String) {
     init {
         require("""\d{11}""".toRegex().matches(asString)) { "Ikke et gyldig fødselsnummer: $asString" }
         require(!(hNummer || fhNummer)) { "Impelemntasjonen støtter ikke H-nummer og FH-nummer" }
-        require(gyldigeKontrollsiffer) { "Kontrollsifre må være gyldige" }
+        require(gyldigeKontrollsiffer) { "Kontrollsiffer må være gyldige" }
     }
 
     val kjoenn: Kjoenn
