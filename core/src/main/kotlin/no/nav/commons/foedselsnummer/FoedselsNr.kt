@@ -3,6 +3,7 @@ package no.nav.commons.foedselsnummer
 import com.fasterxml.jackson.annotation.JsonValue
 import no.nav.commons.foedselsnummer.FoedselsNr.Companion.tabeller.kontrollsiffer1
 import no.nav.commons.foedselsnummer.FoedselsNr.Companion.tabeller.kontrollsiffer2
+import java.lang.IllegalArgumentException
 import java.time.LocalDate
 
 data class FoedselsNr(@JsonValue val asString: String) {
@@ -97,7 +98,9 @@ data class FoedselsNr(@JsonValue val asString: String) {
             for((i, m) in liste.withIndex()) {
                 sum += m * str[i].toString().toInt()
             }
-            return 11 - (sum % 11)
+
+            val res = 11 - (sum % 11)
+            return if (res == 11) 0 else res
         }
     }
 }

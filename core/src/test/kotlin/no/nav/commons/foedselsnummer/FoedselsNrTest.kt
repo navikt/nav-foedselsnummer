@@ -15,6 +15,12 @@ class FoedselsNrTest {
     }
 
     @Test
+    fun kontrollsifferSomInneholder0() {
+        FoedselsNr("01010150740")
+        FoedselsNr("01010150902")
+    }
+
+    @Test
     fun foedselsdato() {
         // 000-499 // 1900-1999
         testFdato("020200 000 69", 1900)
