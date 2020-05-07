@@ -3,14 +3,12 @@ package no.nav.commons.foedselsnummer
 import com.fasterxml.jackson.annotation.JsonValue
 import no.nav.commons.foedselsnummer.FoedselsNr.Companion.tabeller.kontrollsiffer1
 import no.nav.commons.foedselsnummer.FoedselsNr.Companion.tabeller.kontrollsiffer2
-import java.lang.IllegalArgumentException
 import java.time.LocalDate
 
 data class FoedselsNr(@JsonValue val asString: String) {
     init {
         require("""\d{11}""".toRegex().matches(asString)) { "Ikke et gyldig fødselsnummer: $asString" }
         require(!(hNummer || fhNummer)) { "Impelemntasjonen støtter ikke H-nummer og FH-nummer" }
-        require(gyldigeKontrollsiffer) { "Kontrollsiffer må være gyldige" }
     }
 
     val kjoenn: Kjoenn
@@ -48,7 +46,7 @@ data class FoedselsNr(@JsonValue val asString: String) {
             return LocalDate.of(foedselsaar, fnrMonth, fnrDay)
         }
 
-    private val gyldigeKontrollsiffer: Boolean
+    val gyldigeKontrollsiffer: Boolean
         get() {
             val ks1 = asString[9].toString().toInt()
             val ks2 = asString[10].toString().toInt()

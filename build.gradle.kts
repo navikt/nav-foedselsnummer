@@ -16,7 +16,7 @@ subprojects {
     apply(plugin = "maven-publish")
 
     group = "nav-foedselsnummer"
-    version = "1.0-SNAPSHOT.4"
+    version = "1.0-SNAPSHOT.5"
     repositories {
         mavenCentral()
     }
