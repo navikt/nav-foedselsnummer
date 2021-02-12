@@ -3,7 +3,7 @@
 Dette repoet inneholder en klasse for å holde på og validere fødselsnummer.
 
 Ut i fra et fødselsnummer kan den utlede fødselsdato, kjønn og hvorvidt det er et D-nummer.
-Implementasjonen støtter syntetisk genererte fødselsnummer fra NAV/Dolly og Skatteetaten.
+Implementasjonen støtter også syntetisk genererte fødselsnummer fra NAV/Dolly og Skatteetaten.
 
 Repoet inneholder også en testmodul som kan brukes til å generere fødselsnummer og D-nummer i unittester,
  basert på fødselsdato og kjønn.
@@ -31,8 +31,8 @@ repositories {
 }
 
 dependencies {
-    implementation("nav-foedselsnummer:core:1.0-SNAPSHOT.3")
-    testImplementation("nav-foedselsnummer:testutils:1.0-SNAPSHOT.3")
+    implementation("nav-foedselsnummer:core:1.0-SNAPSHOT.6")
+    testImplementation("nav-foedselsnummer:testutils:1.0-SNAPSHOT.6")
 }
 ~~~
 
