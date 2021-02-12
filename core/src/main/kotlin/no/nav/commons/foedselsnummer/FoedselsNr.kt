@@ -8,7 +8,7 @@ import java.time.LocalDate
 data class FoedselsNr(@JsonValue val asString: String) {
     init {
         require("""\d{11}""".toRegex().matches(asString)) { "Ikke et gyldig fødselsnummer: $asString" }
-        require(!(hNummer || fhNummer)) { "Impelemntasjonen støtter ikke H-nummer og FH-nummer" }
+        require(!fhNummer) { "Impelemntasjonen støtter ikke FH-nummer" }
     }
 
     val kjoenn: Kjoenn
@@ -19,14 +19,17 @@ data class FoedselsNr(@JsonValue val asString: String) {
 
     val dNummer: Boolean
         get() {
-            val mnd = asString[0].toString().toInt()
-            return mnd in 4..7
+            val dag = asString[0].toString().toInt()
+            return dag in 4..7
         }
 
-    private val hNummer: Boolean
+    private val syntetiskFoedselsnummerFraNavEllerHNummer: Boolean
         get() {
-            return asString[2].toString().toInt() >= 4
+            return asString[2].toString().toInt() in 4..7
         }
+
+    private val syntetiskFoedselsnummerFraSkatteetaten: Boolean
+            get() = asString[2].toString().toInt() >= 8
 
     private val fhNummer: Boolean
         get() {
@@ -43,7 +46,16 @@ data class FoedselsNr(@JsonValue val asString: String) {
             val dayFelt = asString.slice(0 until 2).toInt()
             val fnrDay = if(dNummer) dayFelt - 40 else dayFelt
 
-            return LocalDate.of(foedselsaar, fnrMonth, fnrDay)
+            val beregnetMåned =
+                if (syntetiskFoedselsnummerFraSkatteetaten) {
+                    fnrMonth - 80
+                } else if (syntetiskFoedselsnummerFraNavEllerHNummer) {
+                    fnrMonth - 40
+                } else {
+                    fnrMonth
+                }
+
+            return LocalDate.of(foedselsaar, beregnetMåned, fnrDay)
         }
 
     val gyldigeKontrollsiffer: Boolean

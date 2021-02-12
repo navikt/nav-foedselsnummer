@@ -3,6 +3,7 @@
 Dette repoet inneholder en klasse for å holde på og validere fødselsnummer.
 
 Ut i fra et fødselsnummer kan den utlede fødselsdato, kjønn og hvorvidt det er et D-nummer.
+Implementasjonen støtter syntetisk genererte fødselsnummer fra NAV/Dolly og Skatteetaten.
 
 Repoet inneholder også en testmodul som kan brukes til å generere fødselsnummer og D-nummer i unittester,
  basert på fødselsdato og kjønn.

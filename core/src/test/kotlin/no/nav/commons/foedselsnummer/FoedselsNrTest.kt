@@ -52,6 +52,12 @@ class FoedselsNrTest {
         testFdato("010299 999 33", 1999)  // 999: overlapp 2000-2039
     }
 
+    @Test
+    fun `syntetiske fødselsnummer fra NAV og Skatt`() {
+        testFdato("024200 000 69", 1900) // Nav/Dolly har +40 på måned
+        testFdato("028200 000 69", 1900) // Skatt har +80 på måned
+    }
+
     fun testFdato(fnr: String, year: Int) {
         assertThat(FoedselsNr(fnr.filter { it != ' ' }).foedselsdato.year).isEqualTo(year)
     }
